@@ -8,10 +8,10 @@ from pathlib import Path
 import smtplib, ssl
 
 port = 587  # For SSL
-smtp_server = "smtp-mail.outlook.com"
-sender_email = "a12398751239875@outlook.com"  # Enter your address
-receiver_email = "a12398751239875@outlook.com"  # Enter receiver address
-password = "!Microsoft!!"
+smtp_server = "example.com"
+sender_email = "example@ex.com"  # Enter your address
+receiver_email = "example@outlook.com"  # Enter receiver address
+password = "EXAMPLE"
 message = "this is a test"
 
 win = win32console.GetConsoleWindow()
